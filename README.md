@@ -5,8 +5,7 @@
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)](https://python.org)
 [![ONNX Runtime](https://img.shields.io/badge/ONNX%20Runtime-1.16%2B-blueviolet?logo=onnx)](https://onnxruntime.ai)
 [![PaddleOCR](https://img.shields.io/badge/OCR-PaddleOCR-red)](https://github.com/PaddlePaddle/PaddleOCR)
-[![Streamlit](https://img.shields.io/badge/Demo-Streamlit-ff4b4b?logo=streamlit)](https://streamlit.io)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![Streamlit](https://img.shields.io/badge/Demo-Streamlit-ff4b4b?logo=streamlit)](https://doclayout-yolo.streamlit.app/)
 
 ---
 
