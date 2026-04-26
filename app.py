@@ -40,8 +40,19 @@ CLASS_COLORS = {
     "Formula":        "#00bcd4",
 }
 
-# ── OCR availability check (runs once at import time) ─────────────────────────
+# ── OCR availability check ─────────────────────────────────────────────────────
+# Streamlit Cloud has paddleocr 3.x pre-installed with an incompatible API.
+# We detect the cloud environment and skip OCR entirely — cleaner than
+# negotiating versions at runtime.
+_IS_CLOUD = bool(
+    os.environ.get("STREAMLIT_SHARING_MODE")
+    or os.environ.get("IS_STREAMLIT_CLOUD")
+    or os.environ.get("HOSTNAME", "").startswith("streamlit")
+)
+
 def _check_ocr_available() -> bool:
+    if _IS_CLOUD:
+        return False
     try:
         import paddleocr  # noqa: F401
         return True
@@ -66,9 +77,17 @@ def load_session():
 
 @st.cache_resource(show_spinner="Loading OCR engine…")
 def load_ocr():
-    """Only called when paddleocr is actually installed."""
+    """
+    Only called locally where paddleocr is installed.
+    Handles both 2.x and 3.x constructor APIs just in case.
+    """
     from paddleocr import PaddleOCR
-    return PaddleOCR(use_angle_cls=True, lang="en", use_gpu=False, show_log=False)
+    try:
+        # paddleocr 2.x API (2.6.x, 2.7.x) — what we use locally
+        return PaddleOCR(use_angle_cls=True, lang="en", use_gpu=False, show_log=False)
+    except TypeError:
+        # paddleocr 3.x fallback
+        return PaddleOCR(lang="en")
 
 
 # ── Bootstrap: download model before anything else renders ────────────────────
@@ -89,7 +108,7 @@ with st.sidebar:
         st.checkbox("Enable OCR text extraction", value=False, disabled=True)
         st.caption(
             "⚠️ OCR unavailable in this deployment.  \n"
-            "Install locally with:  \n"
+            "Run locally for text extraction:  \n"
             "`pip install -r requirements-local.txt`"
         )
 
