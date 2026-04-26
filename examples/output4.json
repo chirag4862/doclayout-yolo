@@ -1,0 +1,172 @@
+{
+    "Table": [
+        {
+            "coordinates": {
+                "l": 115.0,
+                "t": 176.0,
+                "r": 904.0,
+                "b": 341.0
+            },
+            "accuracy": 96.35595083236694,
+            "text": null
+        }
+    ],
+    "Text": [
+        {
+            "coordinates": {
+                "l": 117.0,
+                "t": 115.0,
+                "r": 890.0,
+                "b": 158.0
+            },
+            "accuracy": 91.18696451187134,
+            "text": "through profit or loss, with appropriate distinction between those financial assets and financial liabilities held for trading and those\nthat, upon initial recognition, were designated as at fair value through profit or loss."
+        },
+        {
+            "coordinates": {
+                "l": 117.0,
+                "t": 380.0,
+                "r": 886.0,
+                "b": 452.0
+            },
+            "accuracy": 94.65974569320679,
+            "text": "The Group manages certain portfolios on a total return basis which have been designated at fair value through profit or loss.\nThis includes portfolios of investments in limited partnerships and limited liability companies (primarily hedge funds) for which\nthe performance is assessed internally on a total return basis. In addition, some investments that include an enbedded derivative\ndesignated at fair value thraugh profit or loss."
+        },
+        {
+            "coordinates": {
+                "l": 118.0,
+                "t": 472.0,
+                "r": 901.0,
+                "b": 546.0
+            },
+            "accuracy": 95.50247192382812,
+            "text": "Investments for general account backing insurance and investment liabilities, that are carried at fair value with changes in the fair\nvalue recognized in the income statement, are designated at fair value through profit or loss. The Group elected to designate these\ninvestments at fair value through profit or loss, as a classification of financial assets as available-for-sale would result in accumulation\nof unrealized gains and losses in a revaluation reserve within equity whilst changes to the liability would be reflected in net income\n(accounting mismatch)."
+        },
+        {
+            "coordinates": {
+                "l": 117.0,
+                "t": 579.0,
+                "r": 880.0,
+                "b": 638.0
+            },
+            "accuracy": 94.7722852230072,
+            "text": "Investments held for account of policyholders comprise assets that are linked to various insurance and investment contracts for\nwhich the financial risks are borne by the customer. Under the Group's accounting policies these insurance and investment liabilities\nare measured at the fair value of the linked assets with changes in the fair value recognized in the income statement. To avoid an\naccounting mismatch the linked assets have been designated as at fair value through profit or loss"
+        },
+        {
+            "coordinates": {
+                "l": 118.0,
+                "t": 657.0,
+                "r": 888.0,
+                "b": 700.0
+            },
+            "accuracy": 93.4281587600708,
+            "text": "In addition, the investment for account of policyholders include with profit assets,where an insurer manages these assets together\nwith related Liabilities on a fair value basis in accordance with a documented policy of asset and Liability management. In accordance.\nwith Group's accounting policies, these assets have been designated as at fair value through profit or loss.."
+        },
+        {
+            "coordinates": {
+                "l": 119.0,
+                "t": 736.0,
+                "r": 906.0,
+                "b": 778.0
+            },
+            "accuracy": 93.68268251419067,
+            "text": "With the exception of the financial liabilities with discretionary participating features that are not subject to the classification and\nmeasurement requirements for financial instruments, all investment contracts for account of policyholders that are carned at fair value\nOr at the fair value of the linked assets are included in the table above.."
+        },
+        {
+            "coordinates": {
+                "l": 118.0,
+                "t": 812.0,
+                "r": 883.0,
+                "b": 840.0
+            },
+            "accuracy": 80.68196773529053,
+            "text": "Derivatives\nWith the exception of derivatives designated as a hedging instrument, all derivatives held for general account and held for account oi\npolicyholders are included in the table above"
+        },
+        {
+            "coordinates": {
+                "l": 118.0,
+                "t": 874.0,
+                "r": 871.0,
+                "b": 901.0
+            },
+            "accuracy": 89.5375907421112,
+            "text": "Borrowings designated as at fair value through profit or loss includes financial instruments that are managed on a fair value basis\ntogether with related financial assets and financial derivatives (Refer to note 41)."
+        }
+    ],
+    "Page-header": [
+        {
+            "coordinates": {
+                "l": 71.0,
+                "t": 28.0,
+                "r": 601.0,
+                "b": 43.0
+            },
+            "accuracy": 87.62763738632202,
+            "text": "270\nNotes to the consolidated financial statements of Aegon N.V. Note 50"
+        }
+    ],
+    "Section-header": [
+        {
+            "coordinates": {
+                "l": 117.0,
+                "t": 362.0,
+                "r": 331.0,
+                "b": 375.0
+            },
+            "accuracy": 80.80370426177979,
+            "text": "Investments for general account"
+        },
+        {
+            "coordinates": {
+                "l": 117.0,
+                "t": 564.0,
+                "r": 387.0,
+                "b": 577.0
+            },
+            "accuracy": 78.29949855804443,
+            "text": "Investments for account of policyholders"
+        },
+        {
+            "coordinates": {
+                "l": 118.0,
+                "t": 718.0,
+                "r": 445.0,
+                "b": 731.0
+            },
+            "accuracy": 81.14398717880249,
+            "text": "Investment contracts for account of policyholders"
+        },
+        {
+            "coordinates": {
+                "l": 118.0,
+                "t": 796.0,
+                "r": 193.0,
+                "b": 809.0
+            },
+            "accuracy": 76.044362783432,
+            "text": "Derivatives"
+        },
+        {
+            "coordinates": {
+                "l": 118.0,
+                "t": 858.0,
+                "r": 191.0,
+                "b": 871.0
+            },
+            "accuracy": 79.23279404640198,
+            "text": "Borrowings"
+        }
+    ],
+    "Page-footer": [
+        {
+            "coordinates": {
+                "l": 200.0,
+                "t": 991.0,
+                "r": 324.0,
+                "b": 1003.0
+            },
+            "accuracy": 80.01694679260254,
+            "text": "Annual Report 2013"
+        }
+    ]
+}

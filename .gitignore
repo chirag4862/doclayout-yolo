@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.venv/
+venv/
+
+# Model weights (too large for git — use releases or HF Hub)
+*.onnx
+*.pt
+*.pth
+
+# Outputs
+outputs/
+cropped/
+
+# OS
+.DS_Store
+Thumbs.db
