@@ -13,6 +13,8 @@ import numpy as np
 import streamlit as st
 from PIL import Image
 
+import urllib.request
+
 from layout_detector import DetectFunction, create_session, build_output_structure
 
 # ── Page config ────────────────────────────────────────────────────────────────
@@ -25,6 +27,16 @@ st.set_page_config(
 
 # ── Constants ──────────────────────────────────────────────────────────────────
 MODEL_PATH = "best.onnx"
+MODEL_URL = "https://github.com/chirag4862/doclayout-yolo/releases/download/v1.0.0/best.onnx"
+
+@st.cache_resource(show_spinner="Downloading model weights…")
+def ensure_model():
+    if not os.path.exists(MODEL_PATH):
+        st.info("Downloading model weights (~your_size MB)…")
+        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+    return True
+
+
 CLASSES_PATH = "config/metadata.yaml"
 
 CLASS_COLORS = {

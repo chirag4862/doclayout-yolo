@@ -6,7 +6,6 @@ __pycache__/
 venv/
 
 # Model weights (too large for git — use releases or HF Hub)
-*.onnx
 *.pt
 *.pth
 
