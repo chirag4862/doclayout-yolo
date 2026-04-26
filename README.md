@@ -16,24 +16,24 @@ DocLayout-YOLO takes a scanned or digital document page image and detects the **
 
 **Detected classes (11 total):**
 
-| Class | Description |
-|---|---|
-| `Title` | Document or section title |
-| `Section-header` | Sub-section headings |
-| `Text` | Body text paragraphs |
-| `Table` | Tabular data regions |
-| `List-item` | Bulleted or numbered list entries |
-| `Caption` | Figure and table captions |
-| `Page-header` | Running headers |
-| `Page-footer` | Running footers / page numbers |
-| `Footnote` | Footnote text at page bottom |
-| `Picture` | Images, figures, charts |
-| `Formula` | Mathematical expressions |
+| Class            | Description                       |
+| ---------------- | --------------------------------- |
+| `Title`          | Document or section title         |
+| `Section-header` | Sub-section headings              |
+| `Text`           | Body text paragraphs              |
+| `Table`          | Tabular data regions              |
+| `List-item`      | Bulleted or numbered list entries |
+| `Caption`        | Figure and table captions         |
+| `Page-header`    | Running headers                   |
+| `Page-footer`    | Running footers / page numbers    |
+| `Footnote`       | Footnote text at page bottom      |
+| `Picture`        | Images, figures, charts           |
+| `Formula`        | Mathematical expressions          |
 
 ### Example Output
 
-| Input Document | Detected Layout |
-|---|---|
+| Input Document                      | Detected Layout                   |
+| ----------------------------------- | --------------------------------- |
 | ![Input](examples/singleDocImg.png) | ![Output](examples/annotated.png) |
 
 ---
@@ -64,7 +64,7 @@ doclayout-yolo/
 ## ⚙️ Installation
 
 ```bash
-git clone https://github.com/your-username/doclayout-yolo.git
+git clone https://github.com/chirag4862/doclayout-yolo.git
 cd doclayout-yolo
 pip install -r requirements.txt
 ```
@@ -73,7 +73,7 @@ pip install -r requirements.txt
 
 ### Download Model Weights
 
-The `best.onnx` model weights are not stored in this repo due to file size. Download from the [Releases page](https://github.com/your-username/doclayout-yolo/releases) and place in the project root:
+The `best.onnx` model weights are not stored in this repo due to file size. Download from the [Releases page](https://github.com/chirag4862/doclayout-yolo/releases/) and place in the project root:
 
 ```
 doclayout-yolo/
@@ -103,16 +103,16 @@ python scripts/run_detection.py \
 
 **All CLI options:**
 
-| Flag | Default | Description |
-|---|---|---|
-| `--image` | _(required)_ | Path to input document image |
-| `--model` | `best.onnx` | Path to ONNX weights |
-| `--classes` | `config/metadata.yaml` | Class mapping YAML |
-| `--output` | `outputs/result.json` | JSON output path |
-| `--save-image` | `None` | Save annotated image (optional) |
-| `--conf` | `0.4` | Confidence threshold |
-| `--iou` | `0.4` | IoU threshold for NMS |
-| `--no-ocr` | `False` | Skip OCR (faster, no text extraction) |
+| Flag           | Default                | Description                           |
+| -------------- | ---------------------- | ------------------------------------- |
+| `--image`      | _(required)_           | Path to input document image          |
+| `--model`      | `best.onnx`            | Path to ONNX weights                  |
+| `--classes`    | `config/metadata.yaml` | Class mapping YAML                    |
+| `--output`     | `outputs/result.json`  | JSON output path                      |
+| `--save-image` | `None`                 | Save annotated image (optional)       |
+| `--conf`       | `0.4`                  | Confidence threshold                  |
+| `--iou`        | `0.4`                  | IoU threshold for NMS                 |
+| `--no-ocr`     | `False`                | Skip OCR (faster, no text extraction) |
 
 ### Python API
 
@@ -172,14 +172,14 @@ for class_name, regions in structured.items():
 
 ## 🏗️ Model Details
 
-| Property | Value |
-|---|---|
-| Architecture | YOLOv8 (fine-tuned) |
-| Export format | ONNX v7 |
-| Producer | PyTorch 1.11.0 |
-| Input | Variable size (model stride: 32) |
-| Inference backend | ONNX Runtime (CPU / CUDA) |
-| OCR backend | PaddleOCR |
+| Property          | Value                            |
+| ----------------- | -------------------------------- |
+| Architecture      | YOLOv8 (fine-tuned)              |
+| Export format     | ONNX v7                          |
+| Producer          | PyTorch 1.11.0                   |
+| Input             | Variable size (model stride: 32) |
+| Inference backend | ONNX Runtime (CPU / CUDA)        |
+| OCR backend       | PaddleOCR                        |
 
 The model was fine-tuned on document layout datasets covering financial reports, academic papers, and general structured documents.
 
