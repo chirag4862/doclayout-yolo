@@ -80,6 +80,18 @@ doclayout-yolo/
 └── best.onnx   ← place here
 ```
 
+**For local use (full features including OCR):**
+
+```bash
+pip install -r requirements-local.txt
+```
+
+**For deployment / no OCR:**
+
+```bash
+pip install -r requirements.txt
+```
+
 ---
 
 ## 🚀 Usage

@@ -3,17 +3,13 @@ app.py — Streamlit demo for DocLayout-YOLO
 Run: streamlit run app.py
 """
 
-import io
 import json
 import os
-import tempfile
+import urllib.request
 
 import cv2
 import numpy as np
 import streamlit as st
-from PIL import Image
-
-import urllib.request
 
 from layout_detector import DetectFunction, create_session, build_output_structure
 
@@ -26,18 +22,9 @@ st.set_page_config(
 )
 
 # ── Constants ──────────────────────────────────────────────────────────────────
-MODEL_PATH = "best.onnx"
-MODEL_URL = "https://github.com/chirag4862/doclayout-yolo/releases/download/v1.0.0/best.onnx"
-
-@st.cache_resource(show_spinner="Downloading model weights…")
-def ensure_model():
-    if not os.path.exists(MODEL_PATH):
-        st.info("Downloading model weights (~your_size MB)…")
-        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
-    return True
-
-
+MODEL_PATH   = "best.onnx"
 CLASSES_PATH = "config/metadata.yaml"
+MODEL_URL    = "https://github.com/chirag4862/doclayout-yolo/releases/download/v1.0.0/best.onnx"
 
 CLASS_COLORS = {
     "Title":          "#e74c3c",
@@ -53,17 +40,39 @@ CLASS_COLORS = {
     "Formula":        "#00bcd4",
 }
 
-# ── Session state ──────────────────────────────────────────────────────────────
+# ── OCR availability check (runs once at import time) ─────────────────────────
+def _check_ocr_available() -> bool:
+    try:
+        import paddleocr  # noqa: F401
+        return True
+    except ImportError:
+        return False
+
+OCR_AVAILABLE = _check_ocr_available()
+
+# ── Cached resources ───────────────────────────────────────────────────────────
+@st.cache_resource(show_spinner="Downloading model weights…")
+def ensure_model() -> bool:
+    """Download best.onnx from GitHub Releases if not already present."""
+    if not os.path.exists(MODEL_PATH):
+        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+    return os.path.exists(MODEL_PATH)
+
+
 @st.cache_resource(show_spinner="Loading model…")
 def load_session():
-    if not os.path.exists(MODEL_PATH):
-        return None
     return create_session(MODEL_PATH, CLASSES_PATH)
+
 
 @st.cache_resource(show_spinner="Loading OCR engine…")
 def load_ocr():
+    """Only called when paddleocr is actually installed."""
     from paddleocr import PaddleOCR
     return PaddleOCR(use_angle_cls=True, lang="en", use_gpu=False, show_log=False)
+
+
+# ── Bootstrap: download model before anything else renders ────────────────────
+model_ready = ensure_model()
 
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
@@ -72,7 +81,17 @@ with st.sidebar:
 
     conf_threshold = st.slider("Confidence threshold", 0.1, 0.9, 0.4, 0.05)
     iou_threshold  = st.slider("IoU threshold (NMS)", 0.1, 0.9, 0.4, 0.05)
-    enable_ocr     = st.checkbox("Enable OCR text extraction", value=True)
+
+    if OCR_AVAILABLE:
+        enable_ocr = st.checkbox("Enable OCR text extraction", value=True)
+    else:
+        enable_ocr = False
+        st.checkbox("Enable OCR text extraction", value=False, disabled=True)
+        st.caption(
+            "⚠️ OCR unavailable in this deployment.  \n"
+            "Install locally with:  \n"
+            "`pip install -r requirements-local.txt`"
+        )
 
     st.divider()
     st.markdown("**Detected classes**")
@@ -80,7 +99,10 @@ with st.sidebar:
         st.markdown(f"<span style='color:{color}'>■</span> {cls}", unsafe_allow_html=True)
 
     st.divider()
-    st.markdown("[![GitHub](https://img.shields.io/badge/GitHub-View%20Repo-black?logo=github)](https://github.com/your-username/doclayout-yolo)")
+    st.markdown(
+        "[![GitHub](https://img.shields.io/badge/GitHub-View%20Repo-black?logo=github)]"
+        "(https://github.com/chirag4862/doclayout-yolo)"
+    )
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 st.title("📄 DocLayout-YOLO")
@@ -89,22 +111,16 @@ st.markdown(
     "tables, headers, text blocks, figures, and more."
 )
 
-model_available = os.path.exists(MODEL_PATH)
-if not model_available:
-    st.warning(
-        "⚠️ **Model weights not found.**  \n"
-        "Place `best.onnx` in the project root to enable inference.  \n"
-        "See the README for download instructions."
-    )
+if not model_ready:
+    st.error("❌ Model could not be loaded. Check the release URL or place `best.onnx` in the project root.")
+    st.stop()
 
 uploaded = st.file_uploader(
     "Upload a document image",
     type=["png", "jpg", "jpeg", "webp", "tiff"],
-    disabled=not model_available,
 )
 
 if uploaded:
-    # Decode uploaded image
     file_bytes = np.frombuffer(uploaded.read(), np.uint8)
     image_bgr  = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     image_rgb  = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
@@ -115,7 +131,7 @@ if uploaded:
         st.subheader("Original")
         st.image(image_rgb, use_container_width=True)
 
-    # ── Run detection ──────────────────────────────────────────────────────────
+    # ── Detection ──────────────────────────────────────────────────────────────
     with st.spinner("Running layout detection…"):
         session_args = load_session()
         detector = DetectFunction(
@@ -127,9 +143,9 @@ if uploaded:
         )
         detections = detector.detect(image_bgr, session_args)
 
-    # ── OCR ────────────────────────────────────────────────────────────────────
+    # ── OCR (only if available + enabled) ─────────────────────────────────────
     structured = {}
-    if enable_ocr and detections:
+    if enable_ocr and OCR_AVAILABLE and detections:
         with st.spinner("Extracting text with OCR…"):
             ocr = load_ocr()
             structured = build_output_structure(image_bgr, "", detections, ocr)
@@ -165,10 +181,9 @@ if uploaded:
             use_container_width=True,
         )
     with dl_col2:
-        json_str = json.dumps(structured, indent=2)
         st.download_button(
             "⬇️ Download JSON output",
-            data=json_str,
+            data=json.dumps(structured, indent=2),
             file_name="layout_output.json",
             mime="application/json",
             use_container_width=True,
@@ -178,7 +193,6 @@ if uploaded:
     st.divider()
     st.subheader("📋 Structured Output")
 
-    # Summary metrics
     metric_cols = st.columns(min(len(structured), 5))
     for i, (cls_name, items) in enumerate(structured.items()):
         with metric_cols[i % 5]:
@@ -193,14 +207,12 @@ if uploaded:
 
     st.markdown("---")
 
-    # Per-class expandable sections
     for cls_name, items in structured.items():
-        color = CLASS_COLORS.get(cls_name, "#888")
         with st.expander(f"**{cls_name}** — {len(items)} region(s)", expanded=False):
             for idx, item in enumerate(items):
                 coords = item["coordinates"]
                 st.markdown(
-                    f"**Region {idx+1}** &nbsp; "
+                    f"**Region {idx+1}** &nbsp;"
                     f"<span style='color:gray;font-size:0.85em'>"
                     f"({int(coords['l'])}, {int(coords['t'])}) → ({int(coords['r'])}, {int(coords['b'])})"
                     f" | conf: {item['accuracy']:.1f}%</span>",
@@ -213,12 +225,10 @@ if uploaded:
                 else:
                     st.caption("_(no text detected)_")
 
-    # Raw JSON viewer
     with st.expander("🔍 Raw JSON", expanded=False):
         st.json(structured)
 
 else:
-    # Landing placeholder
     st.info("👆 Upload a document image to get started.")
     st.markdown("""
     **What this model detects:**
